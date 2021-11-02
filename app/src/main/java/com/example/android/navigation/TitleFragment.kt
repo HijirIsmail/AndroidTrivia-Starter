@@ -7,6 +7,9 @@ import android.view.View
 import android.view.ViewGroup
 import com.example.android.navigation.databinding.FragmentTitleBinding
 import androidx.databinding.DataBindingUtil
+import androidx.navigation.findNavController
+import android.view.*
+import androidx.navigation.ui.NavigationUI
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -27,7 +30,23 @@ class TitleFragment : Fragment() {
     ): View? {
         val binding = DataBindingUtil.inflate<FragmentTitleBinding>(inflater,
             R.layout.fragment_title,container,false)
+        binding.playButton.setOnClickListener{
+            //The complete onClickListener with Navigation
+            binding.playButton.setOnClickListener { view : View ->
+                view.findNavController().navigate(R.id.action_titleFragment_to_gameFragment)
+            }
+        }
+        setHasOptionsMenu(true)
         return binding.root
+    }
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        super.onCreateOptionsMenu(menu, inflater)
+        inflater.inflate(R.menu.options_menu,menu)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return NavigationUI.onNavDestinationSelected(item,requireView().findNavController())
+                ||super.onOptionsItemSelected(item)
     }
 
 
